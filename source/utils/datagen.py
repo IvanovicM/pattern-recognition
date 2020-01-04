@@ -1,11 +1,5 @@
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 import math
-
-sns.set()
-plt.rcdefaults()
-colors = ['bo', 'ro', 'go', 'yo']
 
 def generate_gauss_data(M, S, N):
     return np.random.multivariate_normal(M, S, N)
@@ -33,18 +27,3 @@ def generate_uniform_doughnut_part(center_x1, center_x2, angle, distance, N):
 
         x[i, :] = [x1, x2]
     return x
-
-def plot_data(x):
-    legend = [''] * x.shape[0]
-    for i in range(x.shape[0]):
-        plt.plot(x[i, :, 0], x[i, :, 1], colors[i])
-        legend[i] = 'Class {}'.format(i) 
-
-    plt.legend(legend)
-    plt.show()
-
-
-
-
-
-
