@@ -22,11 +22,15 @@ class LinearClassifier():
 
         for s in np.arange(0, 1.01, 0.01):
             # Optimal V for the given s
-            V = np.matrix(np.matmul(
-                    np.linalg.inv(np.dot(s, data['S1']) +
-                                  np.dot((1-s), data['S2'])),
+            V = np.matmul(
+                    np.linalg.inv(
+                        np.add(
+                            np.dot(s, data['S1']),
+                            np.dot((1-s), data['S2'])
+                        )
+                    ),
                     np.subtract(data['M2'], data['M1'])
-                ))
+            )
 
             # Value Y for every example X[i]
             Y = np.matmul(data['X'], np.transpose(V))
@@ -36,24 +40,29 @@ class LinearClassifier():
                 error_0 = len(
                     [Y[class0_idx[i]]
                         for i in range(len(class0_idx))
-                            if Y[class0_idx[i]] > -v0]
+                            if Y[class0_idx[i]] > v0]
                 )
                 error_1 = len(
-                    [Y[class0_idx[i]]
+                    [Y[class1_idx[i]]
                         for i in range(len(class1_idx))
-                            if Y[class1_idx[i]] < -v0]
+                            if Y[class1_idx[i]] < v0]
                 )
+
                 if error_0 + error_1 < error:
                     error = error_0 + error_1
-                    self.v0 = v0
+                    self.v0 = -v0
                     self.s = s
 
         # Calculate optimal V
-        self.V = np.matrix(np.matmul(
-                    np.linalg.inv(np.dot(self.s, data['S1']) +
-                                  np.dot((1-self.s), data['S2'])),
-                    np.subtract(data['M2'], data['M1'])
-                ))
+        self.V = np.matmul(
+            np.linalg.inv(
+                np.add(
+                    np.dot(self.s, data['S1']),
+                    np.dot((1-self.s), data['S2'])
+                )
+            ),
+            np.subtract(data['M2'], data['M1'])
+        )
 
     def predict(self, X):
         '''
@@ -63,10 +72,11 @@ class LinearClassifier():
         '''
         if self.V is None or self.s is None or self.v0 is None:
             return None
-        
-        y = np.matmul(X, np.transpose(self.V)) + self.v0
+
+        #ßprint('{} {}'.format(self.s, self.v0))
+        y = np.add(np.matmul(X, np.transpose(self.V)), self.v0)
         y_predicted = [int(y_example > 0) for y_example in y]
-        return y
+        return y_predicted
 
     def prediction_error(self, X, y):
         '''
@@ -78,7 +88,9 @@ class LinearClassifier():
         y_predicted = self.predict(X)
         if y_predicted is None:
             return None
-        return len([i for i in range(len(y)) if y_predicted[i] != y[i]])
+
+        error = len([i for i in range(len(y)) if y_predicted[i] != y[i]])
+        return error
 
 class Data():
 

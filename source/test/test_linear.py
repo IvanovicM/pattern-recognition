@@ -29,8 +29,8 @@ def get_data(plt):
 if __name__ == '__main__':
     # Generate and plot data
     plt_data, data = get_data(plt)
-    # plt_data.title('Data')
-    # plt_data.show()
+    #plt_data.title('Data')
+    #plt_data.show()
 
     # Fit with Linear classsifier
     lin = LinearClassifier.LinearClassifier()
