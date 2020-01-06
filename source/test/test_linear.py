@@ -27,10 +27,6 @@ def get_data(plt):
     data = Data(X, y, M1, S1, M2, S2)
     return plt, data
 
-def plot_data_classifier(X, figure):
-    figure.title('Data')
-    figure.show()
-
 if __name__ == '__main__':
     # Generate and plot data
     figure_data, data = get_data(plt)
