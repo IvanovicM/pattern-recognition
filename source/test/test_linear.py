@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.utils import shuffle
 from ..utils import datagen
 from ..utils import dataplot
-from ..classifiers import LinearClassifier
+from ..classifiers.LinearClassifier import LinearClassifier
+from ..classifiers.Classifier import Data
 
 sns.set()
 plt.rcdefaults()
@@ -23,21 +24,26 @@ def get_data(plt):
     X = np.concatenate((x1, x2), axis=0)
     y = np.repeat([0, 1], N)
     X, y = shuffle(X, y)
-    data = LinearClassifier.Data(X, y, M1, S1, M2, S2)
+    data = Data(X, y, M1, S1, M2, S2)
     return plt, data
+
+def plot_data_classifier(X, figure):
+    figure.title('Data')
+    figure.show()
 
 if __name__ == '__main__':
     # Generate and plot data
-    plt_data, data = get_data(plt)
-    #plt_data.title('Data')
-    #plt_data.show()
+    figure_data, data = get_data(plt)
 
     # Fit with Linear classsifier
-    lin = LinearClassifier.LinearClassifier()
+    lin = LinearClassifier()
     lin.fit(data)
 
     # Predict and find error for the fitted parameters
     e = lin.prediction_error(data['X'], data['y'])
-    print('error: {}'.format(e))
+    print('Linear Classifier Error: {}/{}'.format(e, len(data['y'])))
 
     # Plot prediction line
+    x, y = lin.get_prediction_line(data['X'])
+    figure_data.plot(x, y, color='black')
+    figure_data.show()
