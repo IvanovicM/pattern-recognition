@@ -10,8 +10,26 @@ class LinearClassifier(Classifier):
             Args:
                 X (numpy array): Data
                 Y (numpy array ): Classes for the given data
-                method (string): 'iterative' or 'resubstitution'
+                method (string): 'resubstitution' or 'desired_output'
         '''
+        if method == 'resubstitution':
+            self._fit_resubstitution(data)
+        if method == 'desired_output':
+            self._fit_desired_output(data)
+
+    def predict(self, X):
+        '''
+            Predicts output for the given data.
+            Args:
+                X (numpy array): Data
+        '''
+        if self.V is None or self.v0 is None:
+            return None
+
+        y = np.add(np.matmul(X, np.transpose(self.V)), self.v0)
+        return y
+
+    def _fit_resubstitution(self, data):
         # Init optimal values
         self.s = 0
         self.v0 = 0
@@ -65,14 +83,25 @@ class LinearClassifier(Classifier):
             np.subtract(data['M2'], data['M1'])
         )
 
-    def predict(self, X):
-        '''
-            Predicts output for the given data.
-            Args:
-                X (numpy array): Data
-        '''
-        if self.V is None or self.s is None or self.v0 is None:
-            return None
+    def _fit_desired_output(self, data):
+        # Generate vector Z
+        Z = np.matrix(
+            [[-1, -data['X'][i, 0], -data['X'][i, 1]] if data['y'][i] == 0
+            else [1, data['X'][i, 0], data['X'][i, 1]]
+                for i in range(len(data['y']))
+            ]
+        )
+        
+        # Generate matrix of desired outputs
+        G = np.ones((len(data['y']), 1))
 
-        y = np.add(np.matmul(X, np.transpose(self.V)), self.v0)
-        return y
+        # Calculate matrix W and extract values V and v0
+        W = np.matmul(
+                np.matmul(
+                    np.linalg.inv(
+                        np.matmul(np.transpose(Z), Z)
+                    ), np.transpose(Z)
+                ), G
+            )
+        self.v0 = W[0]
+        self.V = np.transpose(W[1:3])

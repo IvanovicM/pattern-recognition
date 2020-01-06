@@ -37,13 +37,13 @@ if __name__ == '__main__':
 
     # Fit with Linear classsifier
     lin = LinearClassifier()
-    lin.fit(data)
+    lin.fit(data, method='desired_output')
 
     # Predict and find error for the fitted parameters
     e = lin.prediction_error(data['X'], data['y'])
     print('Linear Classifier Error: {}/{}'.format(e, len(data['y'])))
 
     # Plot prediction line
-    x, y = lin.get_prediction_line(data['X'])
+    x, y = lin.get_prediction_line(data['X'], eps=0.01)
     figure_data.plot(x, y, color='black')
     figure_data.show()
