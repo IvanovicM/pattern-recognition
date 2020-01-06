@@ -1,8 +1,9 @@
 import numpy as np
+import math
 
-class LinerClassifier():
+class LinearClassifier():
 
-    def fit(self, data, Y, method='resubstitution'):
+    def fit(self, data, method='resubstitution'):
         '''
             Fits the model for given training data.
             Args:
@@ -10,22 +11,79 @@ class LinerClassifier():
                 Y (numpy array ): Classes for the given data
                 method (string): 'iterative' or 'resubstitution'
         '''
-        # RRR
-        #ßfor s = 0 : 0.01 : 1
+        # Init optimal values
+        self.s = 0
+        self.v0 = 0
 
+        # Indeces for both classes
+        class0_idx = [i for i in range(len(data['y'])) if data['y'][i] == 0]
+        class1_idx = [i for i in range(len(data['y'])) if data['y'][i] == 1]
+        error = len(data['y'])
+
+        for s in np.arange(0, 1.01, 0.01):
+            # Optimal V for the given s
+            V = np.matrix(np.matmul(
+                    np.linalg.inv(np.dot(s, data['S1']) +
+                                  np.dot((1-s), data['S2'])),
+                    np.subtract(data['M2'], data['M1'])
+                ))
+
+            # Value Y for every example X[i]
+            Y = np.matmul(data['X'], np.transpose(V))
+            
+            # Find optimal v0
+            for v0 in np.arange(math.floor(min(Y)), math.floor(max(Y)) + 1):
+                error_0 = len(
+                    [Y[class0_idx[i]]
+                        for i in range(len(class0_idx))
+                            if Y[class0_idx[i]] > -v0]
+                )
+                error_1 = len(
+                    [Y[class0_idx[i]]
+                        for i in range(len(class1_idx))
+                            if Y[class1_idx[i]] < -v0]
+                )
+                if error_0 + error_1 < error:
+                    error = error_0 + error_1
+                    self.v0 = v0
+                    self.s = s
+
+        # Calculate optimal V
+        self.V = np.matrix(np.matmul(
+                    np.linalg.inv(np.dot(self.s, data['S1']) +
+                                  np.dot((1-self.s), data['S2'])),
+                    np.subtract(data['M2'], data['M1'])
+                ))
 
     def predict(self, X):
         '''
             Predicts output for the given data.
             Args:
-                x (numpy array of doubles): Data
+                S (numpy array): Data
         '''
-        Y = np.zeros(X.shape[0])
+        if self.V is None or self.s is None or self.v0 is None:
+            return None
+        
+        y = np.matmul(X, np.transpose(self.V)) + self.v0
+        y_predicted = [int(y_example > 0) for y_example in y]
+        return y
+
+    def prediction_error(self, X, y):
+        '''
+            Returns prediciton error given data.
+            Args:
+                S (numpy array): Data
+                y (numpy array): True outputs
+        '''
+        y_predicted = self.predict(X)
+        if y_predicted is None:
+            return None
+        return len([i for i in range(len(y)) if y_predicted[i] != y[i]])
 
 class Data():
 
     def __init__(self, X, y, M1, S1, M2, S2):
-        self.X = X
+        self.X = X        
         self.y = y
         self.M1 = M1
         self.S1 = S1

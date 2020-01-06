@@ -4,13 +4,13 @@ import numpy as np
 from sklearn.utils import shuffle
 from ..utils import datagen
 from ..utils import dataplot
-from ..classifiers.LinearClassifier import Data
+from ..classifiers import LinearClassifier
 
 sns.set()
 plt.rcdefaults()
 
 def get_data(plt):
-    N = 3
+    N = 500
     M1 = [3, 3]
     S1 = [[2, 0.5], [0.5, 0.6]]
     M2 = [7.5, 8]
@@ -22,11 +22,20 @@ def get_data(plt):
 
     X = np.concatenate((x1, x2), axis=0)
     y = np.repeat([0, 1], N)
-    data = Data(shuffle(X, y), [1], M1, S1, M2, S2)
+    X, y = shuffle(X, y)
+    data = LinearClassifier.Data(X, y, M1, S1, M2, S2)
     return plt, data
 
 if __name__ == '__main__':
     # Generate and plot data
-    plt, data = get_data(plt)
-    plt.title('Data')
-    plt.show()
+    plt_data, data = get_data(plt)
+    # plt_data.title('Data')
+    # plt_data.show()
+
+    # Fit with Linear classsifier
+    lin = LinearClassifier.LinearClassifier()
+    lin.fit(data)
+
+    # Predict and find error for the fitted parameters
+    e = lin.prediction_error(data['X'], data['y'])
+    print('error: {}'.format(e))
