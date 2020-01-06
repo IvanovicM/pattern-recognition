@@ -73,10 +73,21 @@ class LinearClassifier():
         if self.V is None or self.s is None or self.v0 is None:
             return None
 
-        #ßprint('{} {}'.format(self.s, self.v0))
         y = np.add(np.matmul(X, np.transpose(self.V)), self.v0)
-        y_predicted = [int(y_example > 0) for y_example in y]
-        return y_predicted
+        return y
+
+    def predict_classes(self, X):
+        '''
+            Predicts output for the given data.
+            Args:
+                S (numpy array): Data
+        '''
+        y = self.predict(X)
+        if y is None:
+            return None
+
+        y_classes = [int(y_example > 0) for y_example in y]
+        return y_classes
 
     def prediction_error(self, X, y):
         '''
@@ -85,7 +96,7 @@ class LinearClassifier():
                 S (numpy array): Data
                 y (numpy array): True outputs
         '''
-        y_predicted = self.predict(X)
+        y_predicted = self.predict_classes(X)
         if y_predicted is None:
             return None
 

@@ -39,3 +39,5 @@ if __name__ == '__main__':
     # Predict and find error for the fitted parameters
     e = lin.prediction_error(data['X'], data['y'])
     print('error: {}'.format(e))
+
+    # Plot prediction line
