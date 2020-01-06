@@ -68,7 +68,7 @@ class LinearClassifier():
         '''
             Predicts output for the given data.
             Args:
-                S (numpy array): Data
+                X (numpy array): Data
         '''
         if self.V is None or self.s is None or self.v0 is None:
             return None
@@ -78,9 +78,9 @@ class LinearClassifier():
 
     def predict_classes(self, X):
         '''
-            Predicts output for the given data.
+            Predicts classes for the given data.
             Args:
-                S (numpy array): Data
+                X (numpy array): Data
         '''
         y = self.predict(X)
         if y is None:
@@ -93,7 +93,7 @@ class LinearClassifier():
         '''
             Returns prediciton error given data.
             Args:
-                S (numpy array): Data
+                X (numpy array): Data
                 y (numpy array): True outputs
         '''
         y_predicted = self.predict_classes(X)
