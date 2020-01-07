@@ -71,12 +71,12 @@ def f2_vec(x):
 
 if __name__ == '__main__':
     # Plot bimodal pdf for the data
-    # dataplot.plot_f(plt, f1, -3, 10, -2.5, 7.5,
-    #                   title='Probability density function')
-    # dataplot.plot_f(plt, f2, 2.5, 10, -12.5, -2.5,
-    #                   title='Probability density function')
-    # dataplot.plot_f(plt, f, -3, 10, -12.5, 7.5,
-    #                   title='Probability density functions')
+    dataplot.plot_f(plt, f1, -3, 10, -2.5, 7.5,
+                      title='Probability density function')
+    dataplot.plot_f(plt, f2, 2.5, 10, -12.5, -2.5,
+                      title='Probability density function')
+    dataplot.plot_f(plt, f, -3, 10, -12.5, 7.5,
+                      title='Probability density functions')
 
     # Generate and plot data
     figure_data, data = get_data(plt)

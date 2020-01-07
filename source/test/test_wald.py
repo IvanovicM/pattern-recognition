@@ -53,9 +53,6 @@ def f2(x, y):
     return P1 * multivariate_normal(mean=M1, cov=S1).pdf(np.array([x, y])) + (
            (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
-def f(x, y):
-    return f1(x, y) + f2(x, y)
-
 def f1_vec(x):
     return f1(x[0], x[1])
 
@@ -86,7 +83,9 @@ def plot_m_of_eps(wald, x, eps, class_num_ch=0, real_class=0):
 
     # Plot graphic
     plt.plot(all_eps, all_m)
-    plt.title('Eps{} = {}'.format(abs(1-class_num_ch), eps))
+    plt.xlabel('Eps{}'.format(class_num_ch + 1))
+    plt.ylabel('m')
+    plt.title('Eps{} = {}'.format(abs(1-class_num_ch) + 1, eps))
     plt.show()
 
 if __name__ == '__main__':
@@ -108,7 +107,7 @@ if __name__ == '__main__':
           y2, wald['m']))
 
     # Try various epsilons and plot results
-    plot_m_of_eps(wald, x1, 1e-5, class_num_ch=0)
-    plot_m_of_eps(wald, x2, 1e-5, class_num_ch=0)
     plot_m_of_eps(wald, x1, 1e-5, class_num_ch=1)
     plot_m_of_eps(wald, x2, 1e-5, class_num_ch=1)
+    plot_m_of_eps(wald, x1, 1e-5, class_num_ch=0)
+    plot_m_of_eps(wald, x2, 1e-5, class_num_ch=0)
