@@ -33,13 +33,26 @@ if __name__ == '__main__':
 
     # Fit with Linear classsifier
     lin = LinearClassifier()
+
+    lin.fit(data, method='resubstitution')
+    e_r = lin.prediction_error(data['X'], data['y'])
+    x_r, y_r = lin.get_prediction_line(data['X'], eps=0.1)
+
     lin.fit(data, method='desired_output')
+    e_do = lin.prediction_error(data['X'], data['y'])
+    x_do, y_do = lin.get_prediction_line(data['X'], eps=0.01)
 
-    # Predict and find error for the fitted parameters
-    e = lin.prediction_error(data['X'], data['y'])
-    print('Linear Classifier Error: {}/{}'.format(e, len(data['y'])))
+    # Print errors
+    print('Linear Classifier (Resubstitution Approach) Error: {}/{}'.format(
+          e_r, len(data['y']))
+    )
+    print('Linear Classifier (Desired Output Approach) Error: {}/{}'.format(
+          e_do, len(data['y']))
+    )
 
-    # Plot prediction line
-    x, y = lin.get_prediction_line(data['X'], eps=0.01)
-    figure_data.plot(x, y, color='black')
+    # Plot Results
+    figure_data.plot(x_r, y_r, color='purple', label='Resubstitution Approach')
+    figure_data.plot(x_do, y_do, color='black', label='Desired Output Approach')
+    figure_data.title('Classification')
+    figure_data.legend()
     figure_data.show()

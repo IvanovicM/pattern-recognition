@@ -13,7 +13,6 @@ def data_plot(plt, x):
                  label='Class {}'.format(i)
         ) 
 
-    plt.legend()
     return plt
 
 #def prediciton_line_plot(plt, x):
