@@ -62,19 +62,52 @@ def f1_vec(x):
 def f2_vec(x):
     return f2(x[0], x[1])
 
+def plot_m_of_eps(wald, x, eps, class_num_ch=0, real_class=0):
+    if class_num_ch == 0:
+        eps2 = eps
+    else:
+        eps1 = eps
+
+    # Placeholders for eps-s and m-s
+    all_eps_pow = np.arange(-10, 0, 0.2)
+    all_eps = np.array([pow(10, pw) for pw in all_eps_pow])
+    all_m = np.zeros(all_eps.shape)
+
+    for i in range(len(all_eps)):
+        # Fix epsilons
+        if class_num_ch == 0:
+            eps1 = all_eps[i]
+        else:
+            eps2 = all_eps[i]
+
+        # Remebers results
+        y = wald.predict_class(x, eps1, eps2)
+        all_m[i] = wald['m']
+
+    # Plot graphic
+    plt.plot(all_eps, all_m)
+    plt.title('Eps{} = {}'.format(abs(1-class_num_ch), eps))
+    plt.show()
+
 if __name__ == '__main__':
     # Generate and plot data
     figure_data, x1, x2 = get_data(plt)
+    figure_data.show()
 
     # Predict outputs with Bayes classsifier
     wald = WaldTest(f1_vec, f2_vec)
 
-    # Predict for the first class
-    y1 = wald.predict_class(x1, 1e-20, 1e-40)
-    print('Predicted class: {}. Real class: 0. Number of steps: {}.'.format(
-          y1, wald['m']))
+    plot_m_of_eps(wald, x1, 1e-20, class_num_ch=0)
+    plot_m_of_eps(wald, x2, 1e-20, class_num_ch=0)
+    plot_m_of_eps(wald, x1, 1e-20, class_num_ch=1)
+    plot_m_of_eps(wald, x2, 1e-20, class_num_ch=1)
 
-    # Predict for the second class
-    y2 = wald.predict_class(x2, 1e-20, 1e-40)
-    print('Predicted class: {}. Real class: 1. Number of steps: {}.'.format(
-          y2, wald['m']))
+    # # Predict for the first class
+    # y1 = wald.predict_class(x1, 1e-20, 1e-40)
+    # print('Predicted class: {}. Real class: 0. Steps number: {}.'.format(
+    #       y1, wald['m']))
+
+    # # Predict for the second class
+    # y2 = wald.predict_class(x2, 1e-20, 1e-40)
+    # print('Predicted class: {}. Real class: 1. Steps number: {}.'.format(
+    #       y2, wald['m']))
