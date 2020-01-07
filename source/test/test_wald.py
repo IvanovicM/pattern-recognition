@@ -23,9 +23,9 @@ def get_data(plt):
     x1 = datagen.generate_bimodal_gauss(M1, S1, M2, S2, P1, N)
 
     # Class 2
-    M1 = [7, -9]
+    M1 = [1, 2]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, -5]
+    M2 = [6, 3]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
     x2 = datagen.generate_bimodal_gauss(M1, S1, M2, S2, P1, N)
@@ -44,9 +44,9 @@ def f1(x, y):
            (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
 def f2(x, y):
-    M1 = [7, -9]
+    M1 = [1, 2]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, -5]
+    M2 = [6, 3]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
 
@@ -94,20 +94,21 @@ if __name__ == '__main__':
     figure_data, x1, x2 = get_data(plt)
     figure_data.show()
 
-    # Predict outputs with Bayes classsifier
+    # Wald Test
     wald = WaldTest(f1_vec, f2_vec)
 
-    plot_m_of_eps(wald, x1, 1e-20, class_num_ch=0)
-    plot_m_of_eps(wald, x2, 1e-20, class_num_ch=0)
-    plot_m_of_eps(wald, x1, 1e-20, class_num_ch=1)
-    plot_m_of_eps(wald, x2, 1e-20, class_num_ch=1)
+    # Predict for the first class
+    y1 = wald.predict_class(x1, 1e-4, 1e-5)
+    print('Predicted class: {}. Real class: 0. Steps number: {}.'.format(
+          y1, wald['m']))
 
-    # # Predict for the first class
-    # y1 = wald.predict_class(x1, 1e-20, 1e-40)
-    # print('Predicted class: {}. Real class: 0. Steps number: {}.'.format(
-    #       y1, wald['m']))
+    # Predict for the second class
+    y2 = wald.predict_class(x2, 1e-4, 1e-5)
+    print('Predicted class: {}. Real class: 1. Steps number: {}.'.format(
+          y2, wald['m']))
 
-    # # Predict for the second class
-    # y2 = wald.predict_class(x2, 1e-20, 1e-40)
-    # print('Predicted class: {}. Real class: 1. Steps number: {}.'.format(
-    #       y2, wald['m']))
+    # Try various epsilons and plot results
+    plot_m_of_eps(wald, x1, 1e-5, class_num_ch=0)
+    plot_m_of_eps(wald, x2, 1e-5, class_num_ch=0)
+    plot_m_of_eps(wald, x1, 1e-5, class_num_ch=1)
+    plot_m_of_eps(wald, x2, 1e-5, class_num_ch=1)
