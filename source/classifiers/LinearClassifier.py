@@ -8,8 +8,7 @@ class LinearClassifier(Classifier):
         '''
             Fits the model for given training data.
             Args:
-                X (numpy array): Data
-                Y (numpy array ): Classes for the given data
+                data (class Data): Data
                 method (string): 'resubstitution' or 'desired_output'
         '''
         if method == 'resubstitution':

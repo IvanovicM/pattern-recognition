@@ -8,8 +8,7 @@ class QuadraticClassifier(LinearClassifier):
         '''
             Fits the model for given training data.
             Args:
-                X (numpy array): Data
-                Y (numpy array ): Classes for the given data
+                data (class Data): Data
                 method (string): Always 'desired_output'
         '''
         X = self._create_quadratic_features(data['X'])

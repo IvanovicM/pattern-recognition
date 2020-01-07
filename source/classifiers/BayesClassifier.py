@@ -1,16 +1,13 @@
 import numpy as np
+from .Classifier import Classifier
 
-class BayesClassifier():
+class BayesClassifier(Classifier):
 
-    def __init__(self, n_classes):
-        self.n_classes = n_classes
-
-    def fit(self, X, y, C):
+    def fit(self, data):
         '''
             Fits the model for given training data.
             Args:
-                X (numpy array of doubles): Data
-                Y (numpy array of doubles): Classes for the given data
+                data (class Data): Data
         '''
         n_examples = X.shape[0]
 
