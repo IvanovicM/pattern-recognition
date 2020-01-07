@@ -8,6 +8,7 @@ from ..utils import datagen
 from ..utils import dataplot
 from ..classifiers.Classifier import Data
 from ..classifiers.BayesClassifier import BayesClassifier
+from ..classifiers.LinearClassifier import LinearClassifier
 
 sns.set()
 plt.rcdefaults()
@@ -59,15 +60,51 @@ def f2(x, y):
     return P1 * multivariate_normal(mean=M1, cov=S1).pdf(np.array([x, y])) + (
            (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
+def f(x, y):
+    return f1(x, y) + f2(x, y)
+
+def f1_vec(x):
+    return f1(x[0], x[1])
+
+def f2_vec(x):
+    return f2(x[0], x[1])
+
 if __name__ == '__main__':
     # Plot bimodal pdf for the data
-    dataplot.plot_f(plt, f1, -3, 10, -2.5, 7.5,
-                      title='Probability density function')
-    dataplot.plot_f(plt, f2, 2.5, 10, -12.5, -2.5,
-                      title='Probability density function')
+    # dataplot.plot_f(plt, f1, -3, 10, -2.5, 7.5,
+    #                   title='Probability density function')
+    # dataplot.plot_f(plt, f2, 2.5, 10, -12.5, -2.5,
+    #                   title='Probability density function')
+    # dataplot.plot_f(plt, f, -3, 10, -12.5, 7.5,
+    #                   title='Probability density functions')
 
     # Generate and plot data
     figure_data, data = get_data(plt)
 
-    # Fit with Bayes classsifier
-    bayes = BayesClassifier()
+    # Predict outputs with Bayes classsifier
+    bayes = BayesClassifier(f1_vec, f2_vec)
+    Y = bayes.predict_classes(data['X'])
+
+    # Print errors
+    e = bayes.prediction_error(data['X'], data['y'])
+    print('Bayes Classifier Error: {}/{}'.format(e, len(data['y'])))
+
+    # Spatial results
+    def f_bayes(x, y):
+        return bayes.predict_classes(np.array([x, y]))
+    dataplot.plot_f(figure_data, f_bayes, -7, 14, -17, 10, cmap='binary',
+                    title='Divided space - Bayes')
+
+    # Compare with linear classifier
+    lin = LinearClassifier()
+    lin.fit(data, method='desired_output')
+
+    e_lin = bayes.prediction_error(data['X'], data['y'])
+    print('Linear Classifier (Desired Output Approach) Error: {}/{}'.format(
+          e_lin, len(data['y']))
+    )
+
+    def f_lin(x, y):
+        return lin.predict_classes(np.array([x, y]))
+    dataplot.plot_f(figure_data, f_lin, -7, 14, -17, 10, cmap='binary',
+                      title='Divided space - Linear')

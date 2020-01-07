@@ -7,7 +7,7 @@ class Classifier():
         '''
             Predicts output for the given data.
             Args:
-                data (numpy array): Data
+                X (numpy array): Data
         '''
         return None
 
