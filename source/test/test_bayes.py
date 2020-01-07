@@ -61,8 +61,8 @@ def f2(x, y):
 
 if __name__ == '__main__':
     # Plot bimodal pdf for the data
-    dataplot.plot_bimodal_gauss(plt, f1, -3, 10, -2.5, 7.5)
-    dataplot.plot_bimodal_gauss(plt, f2, 2.5, 10, -12.5, -2.5)
+    dataplot.plot_pdf(plt, f1, -3, 10, -2.5, 7.5)
+    dataplot.plot_pdf(plt, f2, 2.5, 10, -12.5, -2.5)
 
     # Generate and plot data
     figure_data, data = get_data(plt)

@@ -16,7 +16,7 @@ def data_plot(plt, x):
 
     return plt
 
-def plot_bimodal_gauss(plt, f, x1=-10, x2=10, x3=-10, x4=10):
+def plot_pdf(plt, f, x1=-10, x2=10, x3=-10, x4=10):
     x = np.linspace(x1, x2, 50)
     y = np.linspace(x3, x4, 50)
     X, Y = np.meshgrid(x, y)
@@ -29,7 +29,6 @@ def plot_bimodal_gauss(plt, f, x1=-10, x2=10, x3=-10, x4=10):
     f_max = Z.max()
 
     # Plot pdf
-    levels = [0.3*f_max, 0.6*f_max, 0.8*f_max]
     f = plt.contourf(X, Y, Z)
     plt.colorbar(f)
     plt.title('Probability density function')
