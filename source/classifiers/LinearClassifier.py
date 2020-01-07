@@ -86,8 +86,8 @@ class LinearClassifier(Classifier):
     def _fit_desired_output(self, data):
         # Generate vector Z
         Z = np.matrix(
-            [[-1, -data['X'][i, 0], -data['X'][i, 1]] if data['y'][i] == 0
-            else [1, data['X'][i, 0], data['X'][i, 1]]
+            [np.append(-1, -data['X'][i, :]) if data['y'][i] == 0
+            else np.append(1, data['X'][i, :])
                 for i in range(len(data['y']))
             ]
         )
@@ -104,4 +104,4 @@ class LinearClassifier(Classifier):
                 ), G
             )
         self.v0 = W[0]
-        self.V = np.transpose(W[1:3])
+        self.V = np.transpose(W[1:])

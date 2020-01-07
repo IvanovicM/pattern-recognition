@@ -45,8 +45,8 @@ class Classifier():
         num1 = math.ceil((x1_max - x1_min) / 0.1)
         x1 = np.linspace(x1_min, x1_max, num=num1)
         
-        x2_min = min(X[:, 0])
-        x2_max = max(X[:, 0])
+        x2_min = min(X[:, 1])
+        x2_max = max(X[:, 1])
         num2 = math.ceil((x2_max - x2_min) / 0.1)
         x2 = np.linspace(x2_min, x2_max, num=num2)
 
