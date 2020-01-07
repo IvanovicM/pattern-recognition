@@ -4,12 +4,12 @@ from .Classifier import Data
 
 class QuadraticClassifier(LinearClassifier):
 
-    def fit(self, data, method='desired_output'):
+    def fit(self, data):
         '''
             Fits the model for given training data.
+            Method for linear classifier is always 'desired_output'
             Args:
                 data (class Data): Data
-                method (string): Always 'desired_output'
         '''
         X = self._create_quadratic_features(data['X'])
         new_data = Data(X, data['y'], None, None, None, None)
@@ -24,6 +24,9 @@ class QuadraticClassifier(LinearClassifier):
         return super().predict(self._create_quadratic_features(X))
     
     def _create_quadratic_features(self, X_lin):
+        if len(X_lin.shape) == 1:
+            X_lin = np.array([X_lin])
+            
         # Create placeholder
         features_num = X_lin.shape[1]
         quadratic_num = features_num * features_num - 1

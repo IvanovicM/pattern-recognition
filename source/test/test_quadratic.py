@@ -40,16 +40,16 @@ if __name__ == '__main__':
     # Fit with Linear classsifier
     quadr = QuadraticClassifier()
 
-    quadr.fit(data, method='desired_output')
+    quadr.fit(data)
     e_do = quadr.prediction_error(data['X'], data['y'])
-    x_do, y_do = quadr.get_prediction_line(data['X'], eps=0.01)
 
+    # Print error
     print('Quadratic Classifier (Desired Output Approach) Error: {}/{}'.format(
           e_do, len(data['y']))
     )
 
-    # Plot Results
-    figure_data.plot(x_do, y_do, color='black')
-    figure_data.title('Classification')
-    figure_data.legend()
-    figure_data.show()
+    # Spatial results
+    def f(x, y):
+        return quadr.predict_classes(np.array([x, y]))
+    dataplot.plot_f(figure_data, f, 2.5, 10, 2.5, 10.5, cmap='binary',
+                      title='Divided space')

@@ -16,7 +16,7 @@ def data_plot(plt, x):
 
     return plt
 
-def plot_pdf(plt, f, x1=-10, x2=10, x3=-10, x4=10):
+def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None, title=None):
     x = np.linspace(x1, x2, 50)
     y = np.linspace(x3, x4, 50)
     X, Y = np.meshgrid(x, y)
@@ -25,11 +25,14 @@ def plot_pdf(plt, f, x1=-10, x2=10, x3=-10, x4=10):
     # Calculate f(x, y) in the grid
     for i in range(X.shape[0]):
         for j in range(X.shape[1]):
-            Z[i, j] = f(X[i, j], Y[i, j])
+            value = f(X[i, j], Y[i, j])
+            if isinstance(value, list):
+                value = value[0]
+            Z[i, j] = value
     f_max = Z.max()
 
     # Plot pdf
-    f = plt.contourf(X, Y, Z)
+    f = plt.contourf(X, Y, Z, cmap=cmap)
     plt.colorbar(f)
-    plt.title('Probability density function')
+    plt.title(title)
     plt.show()

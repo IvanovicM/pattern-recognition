@@ -36,11 +36,9 @@ if __name__ == '__main__':
 
     lin.fit(data, method='resubstitution')
     e_r = lin.prediction_error(data['X'], data['y'])
-    x_r, y_r = lin.get_prediction_line(data['X'], eps=0.1)
 
     lin.fit(data, method='desired_output')
     e_do = lin.prediction_error(data['X'], data['y'])
-    x_do, y_do = lin.get_prediction_line(data['X'], eps=0.01)
 
     # Print errors
     print('Linear Classifier (Resubstitution Approach) Error: {}/{}'.format(
@@ -50,9 +48,8 @@ if __name__ == '__main__':
           e_do, len(data['y']))
     )
 
-    # Plot Results
-    figure_data.plot(x_r, y_r, color='purple', label='Resubstitution Approach')
-    figure_data.plot(x_do, y_do, color='black', label='Desired Output Approach')
-    figure_data.title('Classification')
-    figure_data.legend()
-    figure_data.show()
+    # Spatial results
+    def f(x, y):
+        return lin.predict_classes(np.array([x, y]))
+    dataplot.plot_f(figure_data, f, -2, 12, 0, 12, cmap='binary',
+                      title='Divided space')

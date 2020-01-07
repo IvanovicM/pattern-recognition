@@ -3,7 +3,7 @@ from .Classifier import Classifier
 
 class BayesClassifier(Classifier):
 
-    def fit(self, data):
+    def fit(self, data, f1, f2):
         '''
             Fits the model for given training data.
             Args:

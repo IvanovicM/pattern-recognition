@@ -3,11 +3,11 @@ import math
 
 class Classifier():
 
-    def predict(self, data):
+    def predict(self, X):
         '''
             Predicts output for the given data.
             Args:
-                data (class Data): Data
+                data (numpy array): Data
         '''
         return None
 
