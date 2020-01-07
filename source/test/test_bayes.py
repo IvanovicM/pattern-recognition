@@ -1,10 +1,13 @@
 import seaborn as sns
+import random
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.utils import shuffle
+from scipy.stats import multivariate_normal
 from ..utils import datagen
 from ..utils import dataplot
 from ..classifiers.Classifier import Data
+from ..classifiers.BayesClassifier import BayesClassifier
 
 sns.set()
 plt.rcdefaults()
@@ -36,15 +39,33 @@ def get_data(plt):
     data = Data(X, y, M1, S1, M2, S2)
     return plt, data
 
-#def f(x, y):
+def f1(x, y):
+    M1 = [1, 1]
+    S1 = [[4, 1.1], [1.1, 2]]
+    M2 = [6, 4]
+    S2 = [[3, -0.8], [-0.8, 1.5]]
+    P1 = 0.6
+
+    return P1 * multivariate_normal(mean=M1, cov=S1).pdf(np.array([x, y])) + (
+           (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
+
+def f2(x, y):
+    M1 = [7, -9]
+    S1 = [[2, 1.1], [1.1, 4]]
+    M2 = [6, -5]
+    S2 = [[3, 0.8], [0.8, 0.5]]
+    P1 = 0.55
+
+    return P1 * multivariate_normal(mean=M1, cov=S1).pdf(np.array([x, y])) + (
+           (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
 if __name__ == '__main__':
+    # Plot bimodal pdf for the data
+    dataplot.plot_bimodal_gauss(plt, f1, -3, 10, -2.5, 7.5)
+    dataplot.plot_bimodal_gauss(plt, f2, 2.5, 10, -12.5, -2.5)
+
+    # Generate and plot data
     figure_data, data = get_data(plt)
-    figure_data.show()
 
-    x = np.linspace(0, 5, 50)
-    y = np.linspace(0, 5, 40)
-
-    # X, Y = np.meshgrid(x, y)
-    # Z = f(X, Y)
-    # plt.contour(X, Y, Z)
+    # Fit with Bayes classsifier
+    bayes = BayesClassifier()
