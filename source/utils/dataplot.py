@@ -14,5 +14,3 @@ def data_plot(plt, x):
         ) 
 
     return plt
-
-#def prediciton_line_plot(plt, x):
