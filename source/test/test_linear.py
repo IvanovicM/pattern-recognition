@@ -53,4 +53,4 @@ if __name__ == '__main__':
         return lin.predict_classes(np.array([x, y]))
     figure_data.legend()
     dataplot.plot_f(figure_data, f, -2, 12, 0, 12, cmap='binary',
-                      title='Divided space')
+                    title='Divided space')

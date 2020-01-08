@@ -92,6 +92,7 @@ if __name__ == '__main__':
     # Spatial results
     def f_bayes(x, y):
         return bayes.predict_classes(np.array([x, y]))
+    figure_data.legend()
     dataplot.plot_f(figure_data, f_bayes, -7, 14, -17, 10, cmap='binary',
                     title='Divided space - Bayes')
 
@@ -106,5 +107,6 @@ if __name__ == '__main__':
 
     def f_lin(x, y):
         return lin.predict_classes(np.array([x, y]))
+    figure_data.legend()
     dataplot.plot_f(figure_data, f_lin, -7, 14, -17, 10, cmap='binary',
-                      title='Divided space - Linear')
+                    title='Divided space - Linear')
