@@ -31,11 +31,11 @@ if __name__ == '__main__':
     print('Kmeans algorithm ...')
     assignments, centers, iters = kmeans.kmeans(data, 2, to_inform=True)
 
-    # Try square error clustering (suitable for non-linear separable classes)
+    # # Try square error clustering (suitable for non-linear separable classes)
     print('Square Error algorithm ...')
     assignments, iters = squarerr.square_error(data, 2, to_inform=True)
 
-    # Stats
+    # # Stats
     print('Experimenting with Kmeans ...')
     stats.clustering_stats(get_data, 2)
     print('Experimenting with Square Error ...')

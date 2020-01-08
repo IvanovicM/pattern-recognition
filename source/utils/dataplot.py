@@ -39,7 +39,7 @@ def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None, title=None):
     plt.show()
 
 def clusters_plot(X, Y, assignments=None, centers=None, title=None):
-    cmap = ListedColormap(['red', 'green', 'blue', 'magenta'])
+    cmap = ListedColormap(['red', 'green', 'magenta', 'cyan', 'blue'])
     if assignments is None:
         assignments = [0] * len(X)
     
