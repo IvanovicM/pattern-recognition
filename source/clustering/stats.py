@@ -13,9 +13,9 @@ def clustering_stats(get_data, k, method_iters=100, method='Kmeans'):
     for method_iter in range(method_iters):
         data = get_data()
         if method == 'Kmeans':
-            assignments, centers, it = kmeans.kmeans(data, k)
+            _, _, it = kmeans.kmeans(data, k)
         else:
-            assignments, it = squarerr.square_error(data, k)
+            _, it = squarerr.square_error(data, k)
         
         iters[method_iter] = it
 
