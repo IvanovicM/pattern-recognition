@@ -4,17 +4,23 @@ from .Classifier import Classifier
 
 class LinearClassifier(Classifier):
 
-    def fit(self, data, method='resubstitution'):
+    def fit(self, data, method='resubstitution', weight_0=1, weight_1=1):
         '''
             Fits the model for given training data.
             Args:
                 data (class Data): Data
                 method (string): 'resubstitution' or 'desired_output'
+                weight_0 (double):
+                    Weight for class 0 in matrix G.
+                    Usable only for 'desired_output' method.
+                weight_1 (double):
+                    Weight for class 1 in matrix G.
+                    Usable only for 'desired_output' method.
         '''
         if method == 'resubstitution':
             self._fit_resubstitution(data)
         if method == 'desired_output':
-            self._fit_desired_output(data)
+            self._fit_desired_output(data, weight_0, weight_1)
 
     def predict(self, X):
         '''
@@ -82,7 +88,7 @@ class LinearClassifier(Classifier):
             np.subtract(data['M2'], data['M1'])
         )
 
-    def _fit_desired_output(self, data):
+    def _fit_desired_output(self, data, weight_0, weight_1):
         # Generate vector Z
         Z = np.matrix(
             [np.append(-1, -data['X'][i, :]) if data['y'][i] == 0
@@ -92,7 +98,13 @@ class LinearClassifier(Classifier):
         )
         
         # Generate matrix of desired outputs
-        G = np.ones((len(data['y']), 1))
+        G = np.zeros((len(data['y']), 1))
+        class0_idx = [i for i in range(len(data['y'])) if data['y'][i] == 0]
+        class1_idx = [i for i in range(len(data['y'])) if data['y'][i] == 1]
+        for idx in class0_idx:
+            G[idx] = weight_0
+        for idx in class1_idx:
+            G[idx] = weight_1
 
         # Calculate matrix W and extract values V and v0
         W = np.matmul(

@@ -51,5 +51,6 @@ if __name__ == '__main__':
     # Spatial results
     def f(x, y):
         return lin.predict_classes(np.array([x, y]))
+    figure_data.legend()
     dataplot.plot_f(figure_data, f, -2, 12, 0, 12, cmap='binary',
                       title='Divided space')
