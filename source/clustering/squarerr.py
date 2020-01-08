@@ -24,20 +24,21 @@ def square_error(data, k):
         S = np.zeros((k, 2, 2))
 
         # Estimation for P, mean and cov
-        for i in range(k):
+        for i in range(n_examples):
             cluster_idx = assignments[i]
             P[cluster_idx] += 1
-
+        for cluster_idx in range(k):
             all_in_cluster = np.matrix([
                 data[i, :]
                 for i in range(n_examples)
                 if assignments[i] == cluster_idx
             ])
 
-            M[i, :] = np.mean(all_in_cluster, axis=0)
-            S[i, :, :] = np.cov(np.transpose(all_in_cluster))
-        for i in range(k):
-            P[i] /= n_examples
+            # USLOV AKO JE PRAZNO
+
+            M[cluster_idx, :] = np.mean(all_in_cluster, axis=0)
+            S[cluster_idx, :, :] = np.cov(np.transpose(all_in_cluster))
+            P[cluster_idx] /= n_examples
 
         # Remember current h
         current_h = np.zeros(n_examples)
@@ -52,9 +53,9 @@ def square_error(data, k):
         # Calculate h for every other class and update assignments if needed
         for i in range(n_examples):
             is_changed = False
-            
+
             for j in range(k):
-                h = get_cluster_h( data[i, :], M[j, :], S[j, :, :], P[j])
+                h = get_cluster_h(data[i, :], M[j, :], S[j, :, :], P[j])
                 if h < current_h[i]:
                     is_changed = True
                     current_h[i] = h 
