@@ -34,17 +34,19 @@ class WaldTest():
         
         # Calculate s_m
         self.m = 0
-        self.s_m = 0
+        self.s_m = []
+        s_m = 0
         for i in range(X.shape[0]):
             h = -np.log(self.f1(X[i, :]) / self.f2(X[i, :]))
 
             self.m += 1
-            self.s_m += h
+            s_m += h
+            self.s_m.append(s_m)
 
             # Is the test over?
-            if self.s_m <= self.a:
+            if s_m <= self.a:
                 return 0
-            if self.s_m >= self.b:
+            if s_m >= self.b:
                 return 1
 
         # What if there was no decision?

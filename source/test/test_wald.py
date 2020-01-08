@@ -91,6 +91,40 @@ def plot_m_of_eps(wald, get_x, fixed_eps, eps_change):
     plt.title('Eps{} = {}'.format(abs(2 - eps_change) + 1, fixed_eps))
     plt.show()
 
+def plot_sm_of_eps(wald, eps1, eps2, experiments_num):
+    max_m = 0
+    l1 = 'Class 0'
+    l2 = 'Class 1'
+
+    # Plot s_m for every experiment
+    for _ in range(experiments_num):
+        # Class 0
+        _ = wald.predict_class(get_x1(), eps1, eps2)
+        m = wald['m']
+        s_m = wald['s_m']
+        plt.plot(np.arange(1, m+1), s_m, 'r', label=l1)
+
+        max_m = max(m, max_m)
+        l1 = None
+
+        # Class 1
+        _ = wald.predict_class(get_x2(), eps1, eps2)
+        m = wald['m']
+        s_m = wald['s_m']
+        plt.plot(np.arange(1, m+1), s_m, 'b', label=l2)
+
+        max_m = max(m, max_m)
+        l2 = None
+
+    # Plot limits
+    plt.plot([1, max_m], [wald['a'], wald['a']], 'black', label='limits')
+    plt.plot([1, max_m], [wald['b'], wald['b']], 'black')
+    plt.xlabel('m')
+    plt.ylabel('s_m')
+    plt.legend()
+    plt.title('Wald test for {} experiments'.format(experiments_num))
+    plt.show()
+
 if __name__ == '__main__':
     # Generate and plot data
     x1 = get_x1()
@@ -98,6 +132,7 @@ if __name__ == '__main__':
 
     # Wald Test
     wald = WaldTest(f1_vec, f2_vec)
+    plot_sm_of_eps(wald, 1e-4, 1e-5, 50)
 
     # Predict for the first class
     y1 = wald.predict_class(x1, 1e-4, 1e-5)
