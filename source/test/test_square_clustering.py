@@ -27,7 +27,7 @@ if __name__ == '__main__':
     data = get_data()
 
     # Try kmeans (won't work well because classes are non-linear separable)
-    #assignments, centers, iters = kmeans.kmeans(data, 2)
+    assignments, centers, iters = kmeans.kmeans(data, 2)
 
     # Try square error clustering (suitable for non-linear separable classes)
     assignments, iters = squarerr.square_error(data, 2)

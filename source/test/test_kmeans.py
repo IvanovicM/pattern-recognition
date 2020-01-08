@@ -9,8 +9,7 @@ from ..clustering import kmeans
 sns.set()
 plt.rcdefaults()
 
-if __name__ == '__main__':
-    # Generate 4 separable classes
+def get_data():
     N = 500
     x0 = datagen.generate_gauss_data([1, 1.5], [[2, 0.5], [0.5, 0.6]], N)
     x1 = datagen.generate_gauss_data([13, 10], [[2, 0.8], [0.8, 1]], N)
@@ -19,5 +18,11 @@ if __name__ == '__main__':
 
     # Kmeans
     data = np.concatenate((x0, x1, x2, x3), axis=0)
-    data = shuffle(data)
+    return shuffle(data)
+
+if __name__ == '__main__':
+    # Generate 4 separable classes
+    data = get_data()
+
+    # Clustering with kmeans
     assignments, centers, iters = kmeans.kmeans(data, 4)

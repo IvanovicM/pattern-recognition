@@ -2,13 +2,14 @@ import numpy as np
 import random
 from ..utils import dataplot
 
-def kmeans(data, k):
+def kmeans(data, k, to_plot=False):
     # Initial values
     n_examples = data.shape[0]
     centers = data[random.sample(range(n_examples), k)]
     assignments = [0] * n_examples
-    dataplot.clusters_plot(data[:, 0], data[:, 1], assignments, centers,
-                           title='Data and initial centers')
+    if to_plot:
+        dataplot.clusters_plot(data[:, 0], data[:, 1], assignments, centers,
+                            title='Data and initial centers')
     
     # Stop criterions
     delta = 100
@@ -18,6 +19,7 @@ def kmeans(data, k):
     previous_centers = centers
     
     # All iterations
+    print('Kmeans algorithm ...')
     while delta > eps and iters < max_iters:
         # Assignment step
         for i in range(n_examples):
@@ -41,6 +43,7 @@ def kmeans(data, k):
 
         iters += 1 
 
-    dataplot.clusters_plot(data[:, 0], data[:, 1], assignments, centers,
-                           title='Final clusters and their centers')
+    if to_plot:
+        dataplot.clusters_plot(data[:, 0], data[:, 1], assignments, centers,
+                            title='Final clusters and their centers')
     return assignments, centers, iters
