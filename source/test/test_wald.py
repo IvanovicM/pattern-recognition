@@ -59,7 +59,11 @@ def f1_vec(x):
 def f2_vec(x):
     return f2(x[0], x[1])
 
-def plot_m_of_eps(wald, fixed_eps, eps_change=1):
+def ma(x, num=3):
+    weights = np.ones(num) / num
+    return np.convolve(x, weights, mode='valid')
+
+def plot_m_of_eps(wald, get_x, fixed_eps, eps_change):
     # Placeholders for m-s and eps-s
     all_eps_pow = np.arange(-10, 0, 0.1)
     all_eps = np.array([pow(10, pw) for pw in all_eps_pow])
@@ -75,17 +79,15 @@ def plot_m_of_eps(wald, fixed_eps, eps_change=1):
             eps2 = all_eps[i]
 
         # Remember results
-        y1 = wald.predict_class(get_x1(), eps1, eps2)
+        _ = wald.predict_class(get_x(), eps1, eps2)
         all_m[i] = wald['m']
-        y2 = wald.predict_class(get_x2(), eps1, eps2)
-        all_m[i] += wald['m']
-
-        all_m[i] /= 2
 
     # Plot graphic
-    plt.semilogx(all_eps, all_m)
+    plt.semilogx(all_eps, all_m, label='real')
+    plt.semilogx(all_eps[14:], ma(all_m, 15), label='moving average')
     plt.xlabel('Eps{}'.format(eps_change))
     plt.ylabel('m')
+    plt.legend()
     plt.title('Eps{} = {}'.format(abs(2 - eps_change) + 1, fixed_eps))
     plt.show()
 
@@ -108,5 +110,5 @@ if __name__ == '__main__':
           y2, wald['m']))
 
     # Try various epsilons and plot results
-    plot_m_of_eps(wald, 1e-5, eps_change=1)
-    plot_m_of_eps(wald, 1e-5, eps_change=2)
+    plot_m_of_eps(wald, get_x1, 1e-5, eps_change=1)
+    plot_m_of_eps(wald, get_x1, 1e-5, eps_change=2)
