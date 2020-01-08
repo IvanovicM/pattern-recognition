@@ -32,6 +32,8 @@ class LinearClassifier(Classifier):
             return None
 
         y = np.add(np.matmul(X, np.transpose(self.V)), self.v0)
+        if len(y.shape) == 0:
+            y = np.matrix(y)
         return y
 
     def _fit_resubstitution(self, data):
