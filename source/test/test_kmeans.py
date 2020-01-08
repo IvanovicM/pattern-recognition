@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.utils import shuffle
 from ..utils import datagen
 from ..utils import dataplot
-from ..clustering.kmeans import kmeans
+from ..clustering import kmeans
 
 sns.set()
 plt.rcdefaults()

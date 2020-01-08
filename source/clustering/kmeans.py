@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from ...utils import dataplot
+from ..utils import dataplot
 
 def kmeans(data, k):
     # Initial values

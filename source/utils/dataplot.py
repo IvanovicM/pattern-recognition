@@ -48,6 +48,6 @@ def clusters_plot(X, Y, assignments=None, centers=None, title=None):
     if centers is not None:
         plt.scatter(centers[:, 0], centers[:, 1],
                     marker='+', s=400, color='black', label='cluster center')
+        plt.legend()
     plt.title(title)
-    plt.legend()
     plt.show()
