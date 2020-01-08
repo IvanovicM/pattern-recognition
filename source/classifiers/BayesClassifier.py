@@ -30,7 +30,7 @@ class BayesClassifier(Classifier):
         # Discriminant function h
         self.h = np.zeros(X.shape[0])
         for i in range(len(self.h)):
-                self.h[i] = -np.log(self.f1(X[i, :]) / self.f2(X[i, :]))
+            self.h[i] = -np.log(self.f1(X[i, :]) / self.f2(X[i, :]))
 
         # Predictions
         Y = np.zeros(X.shape[0])
@@ -40,4 +40,3 @@ class BayesClassifier(Classifier):
             else:
                 Y[i] = 1
         return Y
-

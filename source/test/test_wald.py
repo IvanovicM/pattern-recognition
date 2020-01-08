@@ -59,35 +59,31 @@ def f1_vec(x):
 def f2_vec(x):
     return f2(x[0], x[1])
 
-def ma(x, num=3):
-    weights = np.ones(num) / num
-    return np.convolve(x, weights, mode='valid')
-
-def plot_m_of_eps(wald, get_x, fixed_eps, eps_change):
+def plot_m_of_eps(wald, get_x, fixed_eps, eps_change, experiments_num=20):
     # Placeholders for m-s and eps-s
     all_eps_pow = np.arange(-10, 0, 0.1)
     all_eps = np.array([pow(10, pw) for pw in all_eps_pow])
     all_m = np.zeros(all_eps.shape)
 
     for i in range(len(all_eps)):
-        # Fix epsilons
-        if eps_change == 1:
-            eps1 = all_eps[i]
-            eps2 = fixed_eps
-        else:
-            eps1 = fixed_eps
-            eps2 = all_eps[i]
+        for _ in range(experiments_num):
+            # Fix epsilons
+            if eps_change == 1:
+                eps1 = all_eps[i]
+                eps2 = fixed_eps
+            else:
+                eps1 = fixed_eps
+                eps2 = all_eps[i]
 
-        # Remember results
-        _ = wald.predict_class(get_x(), eps1, eps2)
-        all_m[i] = wald['m']
+            # Remember results
+            _ = wald.predict_class(get_x(), eps1, eps2)
+            all_m[i] += wald['m']
+        all_m[i] /= experiments_num
 
     # Plot graphic
-    plt.semilogx(all_eps, all_m, label='real')
-    plt.semilogx(all_eps[14:], ma(all_m, 15), label='moving average')
+    plt.semilogx(all_eps, all_m)
     plt.xlabel('Eps{}'.format(eps_change))
     plt.ylabel('m')
-    plt.legend()
     plt.title('Eps{} = {}'.format(abs(2 - eps_change) + 1, fixed_eps))
     plt.show()
 
