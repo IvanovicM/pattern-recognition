@@ -22,7 +22,10 @@ def get_data():
     return shuffle(data)
 
 if __name__ == '__main__':
-    # Generate 2 non-separable classes
+    # Generate 2 non-linear separable classes
     data = get_data()
 
-    #assignments, centers, iters = kmeans.kmeans(data, 2)
+    # Try kmeans (won't work well because classes are non-linear separable)
+    assignments, centers, iters = kmeans.kmeans(data, 2)
+
+    # Try square error clustering (suitable for non-linear separable classes)

@@ -42,7 +42,6 @@ def clusters_plot(X, Y, assignments=None, centers=None, title=None):
     cmap = ListedColormap(['red', 'green', 'blue', 'magenta'])
     if assignments is None:
         assignments = [0] * len(X)
-    fig = plt.figure(figsize=(14,8))    
     
     # Plot colored data and clusters center
     plt.scatter(X, Y, c=assignments, cmap=cmap)

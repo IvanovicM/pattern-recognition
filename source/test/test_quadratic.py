@@ -14,14 +14,14 @@ def get_data(plt):
     N = 500
 
     # Class 0
-    c_x1 = 5.5
+    c_x1 = 6
     c_x2 = 7.5
-    angle = 0.25
-    dist = 1.5
+    angle = 0.1
+    dist = 1.7
     x1 = datagen.generate_uniform_doughnut_part(c_x1, c_x2, angle, dist, N)
 
     # Class 1
-    c_x1 = 6
+    c_x1 = 6.1
     c_x2 = 6.5
     x2 = datagen.generate_uniform_circle(c_x1, c_x2, N)
 
