@@ -12,12 +12,12 @@ def get_cluster_h(X, M, S, P):
     det = np.linalg.det(S)
     return 0.5 * (norm + np.log(det) - np.log(P))
 
-def square_error(data, k, to_plot=False):
+def square_error(data, k, to_inform=False):
     # Initial values
     n_examples = data.shape[0]
     assignments = np.floor(k * np.random.uniform(size=n_examples))
     assignments = [int(a) for a in assignments]
-    if to_plot:
+    if to_inform:
         dataplot.clusters_plot(data[:, 0], data[:, 1], assignments,
                             title='Initial clusters')
     
@@ -27,7 +27,6 @@ def square_error(data, k, to_plot=False):
     max_iters = 100
     
     # All iterations
-    print('Square Error algorithm ...')
     while changed > 0 and iters < max_iters:
         P = np.zeros(k)
         M = np.zeros((k, 2))
@@ -72,11 +71,12 @@ def square_error(data, k, to_plot=False):
                 changed += 1
         
         # Output for the current iteration
-        print('Iteration {}: changed examples = {}'.format(iters, changed))
+        if to_inform:
+            print('Iteration {}: changed examples = {}'.format(iters, changed))
 
         iters += 1 
 
-    if to_plot:
+    if to_inform:
         dataplot.clusters_plot(data[:, 0], data[:, 1], assignments,
                             title='Final clusters')
     return assignments, iters

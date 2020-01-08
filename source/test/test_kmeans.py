@@ -5,6 +5,7 @@ from sklearn.utils import shuffle
 from ..utils import datagen
 from ..utils import dataplot
 from ..clustering import kmeans
+from ..clustering import stats
 
 sns.set()
 plt.rcdefaults()
@@ -25,4 +26,8 @@ if __name__ == '__main__':
     data = get_data()
 
     # Clustering with kmeans
-    assignments, centers, iters = kmeans.kmeans(data, 4)
+    assignments, centers, iters = kmeans.kmeans(data, 4, to_inform=True)
+
+    # Stats
+    print('Experimenting with Kmeans ...')
+    stats.clustering_stats(get_data, 4)
