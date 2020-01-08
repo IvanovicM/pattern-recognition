@@ -3,14 +3,22 @@ import random
 from ..utils import dataplot
 
 def get_cluster_h(X, M, S, P):
-    # TODO MATRICES
-    return 0.5
+    d = np.subtract(X, M)
+    norm = np.matmul(
+            np.matmul(
+                np.transpose(d), np.linalg.inv(S)
+            ), d 
+    )
+    det = np.linalg.det(S)
+    return 0.5 * (norm + np.log(det) - np.log(P))
 
 def square_error(data, k):
     # Initial values
     n_examples = data.shape[0]
-    assignments = [0] * n_examples
-    #dataplot.clusters_plot(data[:, 0], data[:, 1], assignments, title='Data')
+    assignments = np.floor(k * np.random.uniform(size=n_examples))
+    assignments = [int(a) for a in assignments]
+    dataplot.clusters_plot(data[:, 0], data[:, 1], assignments,
+                           title='Initial clusters')
     
     # Stop criterions
     changed = n_examples
@@ -24,9 +32,6 @@ def square_error(data, k):
         S = np.zeros((k, 2, 2))
 
         # Estimation for P, mean and cov
-        for i in range(n_examples):
-            cluster_idx = assignments[i]
-            P[cluster_idx] += 1
         for cluster_idx in range(k):
             all_in_cluster = np.matrix([
                 data[i, :]
@@ -34,11 +39,11 @@ def square_error(data, k):
                 if assignments[i] == cluster_idx
             ])
 
-            # USLOV AKO JE PRAZNO
-
             M[cluster_idx, :] = np.mean(all_in_cluster, axis=0)
             S[cluster_idx, :, :] = np.cov(np.transpose(all_in_cluster))
-            P[cluster_idx] /= n_examples
+            P[cluster_idx] = (
+                len([i for i in assignments if i == cluster_idx]) / n_examples
+            )
 
         # Remember current h
         current_h = np.zeros(n_examples)
@@ -69,6 +74,6 @@ def square_error(data, k):
 
         iters += 1 
 
-    # dataplot.clusters_plot(data[:, 0], data[:, 1], assignments,
-    #                        title='Final clusters')
+    dataplot.clusters_plot(data[:, 0], data[:, 1], assignments,
+                           title='Final clusters')
     return assignments, iters
