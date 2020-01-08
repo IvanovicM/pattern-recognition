@@ -2,14 +2,19 @@ import numpy as np
 import random
 from ..utils import dataplot
 
+def is_invertible(a):
+    return a.shape[0] == a.shape[1] and np.linalg.matrix_rank(a) == a.shape[0]
+
 def get_cluster_h(X, M, S, P):
+    if not is_invertible(S):
+        return 1e10
+    det = np.linalg.det(S)
     d = np.subtract(X, M)
     norm = np.matmul(
             np.matmul(
                 np.transpose(d), np.linalg.inv(S)
             ), d 
     )
-    det = np.linalg.det(S)
     return 0.5 * (norm + np.log(det) - np.log(P))
 
 def square_error(data, k, to_inform=False):
@@ -39,6 +44,8 @@ def square_error(data, k, to_inform=False):
                 for i in range(n_examples)
                 if assignments[i] == cluster_idx
             ])
+            if all_in_cluster.shape[1] == 0:
+                continue
 
             M[cluster_idx, :] = np.mean(all_in_cluster, axis=0)
             S[cluster_idx, :, :] = np.cov(np.transpose(all_in_cluster))
