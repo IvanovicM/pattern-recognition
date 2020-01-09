@@ -17,7 +17,7 @@ def data_plot(plt, x):
 
     return plt
 
-def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None, title=None):
+def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None):
     x = np.linspace(x1, x2, 50)
     y = np.linspace(x3, x4, 50)
     X, Y = np.meshgrid(x, y)
@@ -30,13 +30,35 @@ def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None, title=None):
             if isinstance(value, list):
                 value = value[0]
             Z[i, j] = value
-    f_max = Z.max()
 
     # Plot pdf
     f = plt.contourf(X, Y, Z, cmap=cmap)
     plt.colorbar(f)
-    plt.title(title)
-    plt.show()
+    return plt
+
+def plot_f_peaks(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None):
+    x = np.linspace(x1, x2, 50)
+    y = np.linspace(x3, x4, 50)
+    X, Y = np.meshgrid(x, y)
+    Z = np.zeros(X.shape)
+
+    # Calculate f(x, y) in the grid
+    for i in range(X.shape[0]):
+        for j in range(X.shape[1]):
+            value = f(X[i, j], Y[i, j])
+            if isinstance(value, list):
+                value = value[0]
+            Z[i, j] = value
+    Z_max = Z.max()
+
+    # Plot pdf
+    limit = np.exp(-1/2)
+    plt.contour(X, Y, Z, levels=[limit*Z_max, (limit + 0.05)*Z_max], cmap=cmap)
+    limit = np.exp(-4/2)
+    plt.contour(X, Y, Z, levels=[limit*Z_max, (limit + 0.05)*Z_max], cmap=cmap)
+    limit = np.exp(-9/2)
+    plt.contour(X, Y, Z, levels=[limit*Z_max, (limit + 0.05)*Z_max], cmap=cmap)
+    return plt
 
 def clusters_plot(X, Y, assignments=None, centers=None, title=None):
     cmap = ListedColormap(['red', 'green', 'magenta', 'cyan', 'blue'])

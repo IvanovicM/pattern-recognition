@@ -122,6 +122,12 @@ def plot_sm_of_eps(wald, eps1, eps2, experiments_num):
     plt.show()
 
 if __name__ == '__main__':
+    # Plot peaks of both bimodal pdfs
+    plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -5, 8, cmap='Reds')
+    plt = dataplot.plot_f_peaks(plt, f2, -5, 12, -5, 8, cmap='Blues')
+    plt.title('Probability density functions')
+    plt.show()
+
     # Generate and plot data
     x1 = get_x1()
     x2 = get_x2()

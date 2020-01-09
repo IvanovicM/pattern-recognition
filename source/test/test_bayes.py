@@ -70,13 +70,16 @@ def f2_vec(x):
     return f2(x[0], x[1])
 
 if __name__ == '__main__':
-    # Plot bimodal pdf for the data
-    dataplot.plot_f(plt, f1, -3, 10, -2.5, 7.5,
-                    title='Probability density function')
-    dataplot.plot_f(plt, f2, 2.5, 10, -12.5, -2.5,
-                    title='Probability density function')
-    dataplot.plot_f(plt, f, -3, 10, -12.5, 7.5,
-                    title='Probability density functions')
+    # Plot peaks of both bimodal pdfs
+    plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -14, 8, cmap='Reds')
+    plt = dataplot.plot_f_peaks(plt, f2, -5, 12, -14, 8, cmap='Blues')
+    plt.title('Probability density functions')
+    plt.show()
+
+    # Plot both pdfs
+    plt = dataplot.plot_f(plt, f, -5, 12, -14, 8)
+    plt.title('Probability density functions')
+    plt.show()
 
     # Generate and plot data
     figure_data, data = get_data(plt)
