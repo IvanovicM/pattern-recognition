@@ -61,9 +61,8 @@ def f2_vec(x):
 
 def plot_m_of_eps(wald, get_x, fixed_eps, eps_change, experiments_num=20):
     # Placeholders for m-s and eps-s
-    all_eps_pow = np.arange(-10, 0, 0.1)
-    all_eps = np.array([pow(10, pw) for pw in all_eps_pow])
-    all_m = np.zeros(all_eps.shape)
+    all_eps = np.logspace(-10, 0, 100)
+    all_m = np.zeros(100)
 
     for i in range(len(all_eps)):
         for _ in range(experiments_num):
