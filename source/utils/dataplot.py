@@ -17,7 +17,7 @@ def data_plot(plt, x):
 
     return plt
 
-def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None):
+def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None, title=None):
     x = np.linspace(x1, x2, 50)
     y = np.linspace(x3, x4, 50)
     X, Y = np.meshgrid(x, y)
@@ -34,7 +34,8 @@ def plot_f(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None):
     # Plot pdf
     f = plt.contourf(X, Y, Z, cmap=cmap)
     plt.colorbar(f)
-    return plt
+    plt.title(title)
+    plt.show()
 
 def plot_f_peaks(plt, f, x1=-10, x2=10, x3=-10, x4=10, cmap=None):
     x = np.linspace(x1, x2, 50)
