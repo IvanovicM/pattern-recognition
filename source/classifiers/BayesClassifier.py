@@ -40,3 +40,33 @@ class BayesClassifier(Classifier):
             else:
                 Y[i] = 1
         return Y
+
+    def estimate_errors(self, xmin=-5, xmax=5, ymin=-5, ymax=5, dx=0.1, dy=0.1):
+        '''
+            Estimates error ot Bayes classifier.
+            Args:
+                xmin (double): Minimal value for the first coordinate.
+                xmax (double): Maximal value for the first coordinate.
+                ymin (double): Minimal value for the second coordinate.
+                ymax (double): Maximal value for the second coordinate.
+                dx (double): Step for the first coordinate.  
+                dy (double): Step for the second coordinate.  
+        '''
+        if self.f1 is None or self.f2 is None or self.compare_value is None:
+            return None
+        self.error_1 = 0.0
+        self.error_2 = 0.0
+
+        # Estimate error
+        for x in np.arange(xmin, xmax, dx):
+            for y in np.arange(ymin, ymax, dy):
+                f1_value = self.f1([x, y])
+                f2_value = self.f2([x, y])
+                h = -np.log(f1_value /f2_value)
+
+                # Errors for this classification
+                if h < self.compare_value:
+                    self.error_2 += f2_value * dx * dy
+                else:
+                    self.error_1 += f1_value * dx * dy
+        return self.error_1, self.error_2

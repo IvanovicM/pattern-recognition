@@ -87,7 +87,11 @@ if __name__ == '__main__':
 
     # Print errors
     e = bayes.prediction_error(data['X'], data['y'])
-    print('Bayes Classifier Error: {}/{}'.format(e, len(data['y'])))
+    error_1, error_2 = bayes.estimate_errors(-3, 10, -13, 7)
+    print('--Bayes Classifier Errors--\n'
+          'On this dataset: {}/{}\n'
+          'Error 1 estimated: {}\n'
+          'Error 2 estimated: {}'.format(e, len(data['y']), error_1, error_2))
 
     # Spatial results
     def f_bayes(x, y):
