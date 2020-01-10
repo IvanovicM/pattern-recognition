@@ -9,7 +9,8 @@ sns.set()
 plt.rcdefaults()
 
 if __name__ == '__main__':
-    X, y = dataset.read_data()
-    X = dataset.preprocess_data(X)
+    # X, y = dataset.read_data()
+    # X = dataset.preprocess_data(X, y)
+
+    X, y = dataset.read_data_processed()
     
-    train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=0.2)
