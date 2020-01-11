@@ -71,9 +71,7 @@ def experiments(X):
     plt.show()
 
 if __name__ == '__main__':
-    # X, y = dataset.read_data()
-    # X = dataset.preprocess_data(X, y)
+    #X, y = dataset.read_data()
+    #X = dataset.preprocess_data(X, y)
 
     X, y = dataset.read_data_processed() 
-    experiments(X)
-
