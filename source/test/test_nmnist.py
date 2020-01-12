@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import train_test_split
 from ..nmnist import dataset
+from ..nmnist import features
 from ..utils import dataplot
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
@@ -23,22 +24,22 @@ def get_new_x(X):
 
     return X_new
 
-def experiments(X):
-    X_new = get_new_x(X) 
+def plot_in_2d(X, method='TSNE'):
+    n_examples = int(len(X) / 5)
+    a_idx = np.arange(0, n_examples)
+    e_idx = np.arange(n_examples, 2*n_examples)
+    i_idx = np.arange(2*n_examples, 3*n_examples)
+    o_idx = np.arange(3*n_examples, 4*n_examples)
+    u_idx = np.arange(4*n_examples, 5*n_examples)
 
-    a_idx = np.arange(0, 120)
-    e_idx = np.arange(120, 240)
-    i_idx = np.arange(240, 360)
-    o_idx = np.arange(360, 480)
-    u_idx = np.arange(480, 600)
-
-    # # TSNE
-    # tsne = TSNE(2)  
-    # X_fit = tsne.fit_transform(X_new)
-
-    # PSA
-    pca = PCA(2)
-    X_fit = pca.fit_transform(X_new)
+    if method == 'TSNE':
+        print('TSNE ...')
+        tsne = TSNE(2)  
+        X_fit = tsne.fit_transform(X)
+    else:
+        print('PSA ...')
+        pca = PCA(2)
+        X_fit = pca.fit_transform(X)
 
     x_a = X_fit[a_idx, 0]
     y_a = X_fit[a_idx, 1]
@@ -55,12 +56,6 @@ def experiments(X):
     x_u = X_fit[u_idx, 0]
     y_u = X_fit[u_idx, 1]
 
-    print(len(x_a))
-    print(len(x_e))
-    print(len(x_i))
-    print(len(x_o))
-    print(len(x_u))
-
     plt.scatter(x_a, y_a, color='r', label='A')
     plt.scatter(x_e, y_e, color='b', label='E')
     plt.scatter(x_i, y_i, color='m', label='I')
@@ -75,3 +70,5 @@ if __name__ == '__main__':
     #X = dataset.preprocess_data(X, y)
 
     X, y = dataset.read_data_processed() 
+    f = features.make_features(X)
+    plot_in_2d(f)

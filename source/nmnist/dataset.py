@@ -6,7 +6,7 @@ from skimage import filters
 from queue import Queue 
 from skimage import morphology
 
-n_examples = 120
+n_examples = 10
 
 def read_data():
     X = []
