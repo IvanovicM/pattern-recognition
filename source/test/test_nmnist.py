@@ -33,11 +33,9 @@ def plot_in_2d(X, method='TSNE'):
     u_idx = np.arange(4*n_examples, 5*n_examples)
 
     if method == 'TSNE':
-        print('TSNE ...')
         tsne = TSNE(2)  
         X_fit = tsne.fit_transform(X)
     else:
-        print('PSA ...')
         pca = PCA(2)
         X_fit = pca.fit_transform(X)
 
@@ -69,6 +67,11 @@ if __name__ == '__main__':
     #X, y = dataset.read_data()
     #X = dataset.preprocess_data(X, y)
 
-    X, y = dataset.read_data_processed() 
+    print('Read data ...')
+    X, y = dataset.read_data_processed(120) 
+
+    print('Make features ...')
     f = features.make_features(X)
+
+    print('Plot 2D ...')
     plot_in_2d(f)

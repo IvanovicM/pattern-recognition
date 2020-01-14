@@ -6,8 +6,6 @@ from skimage import filters
 from queue import Queue 
 from skimage import morphology
 
-n_examples = 10
-
 def read_data():
     X = []
     y = np.repeat([0, 1, 2, 3, 4], n_examples)
@@ -25,7 +23,7 @@ def read_data():
             X.append(gray_image)
     return X, y
 
-def read_data_processed():
+def read_data_processed(n_examples=120):
     X = []
     y = np.repeat([0, 1, 2, 3, 4], n_examples)
 
