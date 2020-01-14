@@ -25,9 +25,9 @@ def get_data(plt):
     x1 = datagen.generate_bimodal_gauss(M1, S1, M2, S2, P1, N)
 
     # Class 2
-    M1 = [7, -9]
+    M1 = [7, -4]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, -5]
+    M2 = [6, 0]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
     x2 = datagen.generate_bimodal_gauss(M1, S1, M2, S2, P1, N)
@@ -51,9 +51,9 @@ def f1(x, y):
            (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
 def f2(x, y):
-    M1 = [7, -9]
+    M1 = [7, -4]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, -5]
+    M2 = [6, 0]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
 
@@ -71,13 +71,13 @@ def f2_vec(x):
 
 if __name__ == '__main__':
     # Plot peaks of both bimodal pdfs
-    f_plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -14, 8, cmap='Reds')
-    f_plt = dataplot.plot_f_peaks(f_plt, f2, -5, 12, -14, 8, cmap='Blues')
+    f_plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -10, 8, cmap='Reds')
+    f_plt = dataplot.plot_f_peaks(f_plt, f2, -5, 12, -10, 8, cmap='Blues')
     f_plt.title('Probability density functions')
     f_plt.show()
 
     # Plot both pdfs
-    dataplot.plot_f(plt, f, -5, 12, -14, 8,
+    dataplot.plot_f(plt, f, -5, 12, -10, 8,
                     title='Probability density functions')
 
     # Generate and plot data
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     lin = LinearClassifier()
     lin.fit(data, method='desired_output')
 
-    e_lin = bayes.prediction_error(data['X'], data['y'])
+    e_lin = lin.prediction_error(data['X'], data['y'])
     print('Linear Classifier (Desired Output Approach) Error: {}/{}'.format(
           e_lin, len(data['y']))
     )

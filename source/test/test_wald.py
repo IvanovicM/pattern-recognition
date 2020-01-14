@@ -26,9 +26,9 @@ def get_x2():
     N = 500
 
     # Class 2
-    M1 = [1, 2]
+    M1 = [7, -4]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, 3]
+    M2 = [6, 0]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
     return datagen.generate_bimodal_gauss(M1, S1, M2, S2, P1, N)
@@ -44,9 +44,9 @@ def f1(x, y):
            (1-P1) * multivariate_normal(mean=M2, cov=S2).pdf(np.array([x, y])))
 
 def f2(x, y):
-    M1 = [1, 2]
+    M1 = [7, -4]
     S1 = [[2, 1.1], [1.1, 4]]
-    M2 = [6, 3]
+    M2 = [6, 0]
     S2 = [[3, 0.8], [0.8, 0.5]]
     P1 = 0.55
 
@@ -96,8 +96,8 @@ def plot_sm_of_eps(wald, eps1, eps2, experiments_num):
         # Class 0
         _ = wald.predict_class(get_x1(), eps1, eps2)
         m = wald['m']
-        s_m = wald['s_m']
-        plt.plot(np.arange(1, m+1), s_m, 'r', label=l1)
+        s_m = np.append([0], wald['s_m'])
+        plt.plot(np.arange(0, m+1), s_m, 'r', label=l1)
 
         max_m = max(m, max_m)
         l1 = None
@@ -105,15 +105,15 @@ def plot_sm_of_eps(wald, eps1, eps2, experiments_num):
         # Class 1
         _ = wald.predict_class(get_x2(), eps1, eps2)
         m = wald['m']
-        s_m = wald['s_m']
-        plt.plot(np.arange(1, m+1), s_m, 'b', label=l2)
+        s_m = np.append([0], wald['s_m'])
+        plt.plot(np.arange(0, m+1), s_m, 'b', label=l2)
 
         max_m = max(m, max_m)
         l2 = None
 
     # Plot limits
-    plt.plot([1, max_m], [wald['a'], wald['a']], 'black', label='limits')
-    plt.plot([1, max_m], [wald['b'], wald['b']], 'black')
+    plt.plot([0, max_m], [wald['a'], wald['a']], 'black', label='limits')
+    plt.plot([0, max_m], [wald['b'], wald['b']], 'black')
     plt.xlabel('m')
     plt.ylabel('s_m')
     plt.legend()
@@ -122,8 +122,8 @@ def plot_sm_of_eps(wald, eps1, eps2, experiments_num):
 
 if __name__ == '__main__':
     # Plot peaks of both bimodal pdfs
-    plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -5, 8, cmap='Reds')
-    plt = dataplot.plot_f_peaks(plt, f2, -5, 12, -5, 8, cmap='Blues')
+    plt = dataplot.plot_f_peaks(plt, f1, -5, 12, -10, 8, cmap='Reds')
+    plt = dataplot.plot_f_peaks(plt, f2, -5, 12, -10, 8, cmap='Blues')
     plt.title('Probability density functions')
     plt.show()
 
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     # Wald Test
     wald = WaldTest(f1_vec, f2_vec)
-    plot_sm_of_eps(wald, 1e-4, 1e-5, 50)
+    plot_sm_of_eps(wald, 1e-8, 1e-8, 50)
 
     # Predict for the first class
     y1 = wald.predict_class(x1, 1e-4, 1e-5)
@@ -146,5 +146,5 @@ if __name__ == '__main__':
           y2, wald['m']))
 
     # Try various epsilons and plot results
-    plot_m_of_eps(wald, get_x1, 1e-5, eps_change=1)
-    plot_m_of_eps(wald, get_x1, 1e-5, eps_change=2)
+    plot_m_of_eps(wald, get_x1, 1e-8, eps_change=1, experiments_num=300)
+    plot_m_of_eps(wald, get_x1, 1e-8, eps_change=2, experiments_num=300)
