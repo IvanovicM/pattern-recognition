@@ -43,10 +43,10 @@ Classification model is implemented in Keras, using dataset of 600 images.
 To run any test simply go to the directory above 'source' and type the following command in your terminal.
 
   ```shell
-  python -m source.package.script
+  python -m source.test.test_script
   ```
 
-Test script can be any from the directory 'test'
+Test script can be any from the directory 'test':
 
 - ```test_bayes``` - To test Bayes Classifier
 - ```test_wald``` - To test Wald Sequential Test
