@@ -10,7 +10,7 @@ Additionally, not-MNIST model for Serbian Vowels is implemented.
 
 ## What can these methods do?
 
-Some of the classification results are shown before. Various classifiers are implemented, including Linear, Bayes and Quadratic.
+Some of the classification results are shown below. Various classifiers are implemented, including Linear, Bayes and Quadratic.
 
 | <img src="images/bayes.png"> | <img src="images/quadratic.png">|
 |:---:|:---:|
